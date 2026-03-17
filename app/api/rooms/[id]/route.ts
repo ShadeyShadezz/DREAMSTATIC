@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getRoomById, updateRoom, deleteRoom } from '@/lib/db'
 
-// GET /api/rooms/[id] - Get a single room by ID
+// GET /api/rooms/[id] - Get a single room by ID.
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
