@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getRoomById, updateRoom, deleteRoom } from '/lib/db'
+import { getRoomById, updateRoom, deleteRoom } from '@/lib/db'
 
 // GET /api/rooms/[id] - Get a single room by ID
 export async function GET(

@@ -10,8 +10,6 @@ jobs:
   test:
     - name: Setup SSH Key
     run: echo "${{ secrets.EC2_KEY }}" > key.pem
-    
-
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
