@@ -8,6 +8,10 @@ on:
 
 jobs:
   test:
+    - name: Setup SSH Key
+    run: echo "${{ secrets.EC2_KEY }}" > key.pem
+    
+
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -34,12 +38,14 @@ jobs:
     - run: npm ci
     - run: npx prisma generate
     - run: npm run build
+
+    job:
     - name: Deploy to EC2
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
-        key: ${{ secrets.EC2_SSH_KEY }}
+        key: ${{ secrets.EC2_KEY }}
         script: |
           cd /var/www/dreamstatic
           git pull origin main
