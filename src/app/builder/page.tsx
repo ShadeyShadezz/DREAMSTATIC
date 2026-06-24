@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { extractColors, suggestTags } from '../_lib/color-extract'
 import { MUSIC_LIBRARY } from '../_lib/music'
@@ -67,7 +67,6 @@ const MAX_ROOM_DESCRIPTION_LENGTH = 500
 
 export default function Builder() {
   const router = useRouter()
-  const searchParams = useSearchParams()
 
   const [authChecked, setAuthChecked] = useState(false)
   const [roomData, setRoomData] = useState<RoomData>({
@@ -107,8 +106,9 @@ export default function Builder() {
   }, [router])
 
   useEffect(() => {
-    const templateId = searchParams.get('template')
-    const trackId = searchParams.get('track')
+    const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null
+    const templateId = params?.get('template') || null
+    const trackId = params?.get('track') || null
 
     if (trackId) {
       const track = MUSIC_LIBRARY.find(t => t.id === trackId)
@@ -150,7 +150,7 @@ export default function Builder() {
     })()
 
     return () => { mounted = false }
-  }, [searchParams])
+  }, [])
 
   if (!authChecked) {
     return (

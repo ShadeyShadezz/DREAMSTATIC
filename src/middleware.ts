@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { AUTH_COOKIE } from '@/app/_lib/constants'
+import { AUTH_COOKIE } from './app/_lib/constants'
 
 const protectedPages = ['/builder', '/profile', '/settings', '/drafts', '/notifications']
 
