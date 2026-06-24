@@ -9,11 +9,44 @@ datasource db {
 model Room {
   id           String   @id @default(cuid())
   name         String
+  description  String?
   creator      String   @default("anon")
+  userId       String?
   palette      Json     @default("[]")
   imageUrl     String?
   musicPreview String?
   tags         Json     @default("[]")
   createdAt    DateTime @default(now())
   isPublic     Boolean  @default(true)
+}
+
+model User {
+  id           String    @id @default(cuid())
+  username     String    @unique
+  email        String    @unique
+  passwordHash String
+  displayName  String
+  bio          String    @default("New dreamstatic explorer")
+  joinedAt     DateTime  @default(now())
+  comments     Comment[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  roomId    String
+  userId    String
+  username  String
+  body      String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model NotificationRead {
+  id             String   @id @default(cuid())
+  userId         String
+  notificationId String
+  readAt         DateTime @default(now())
+
+  @@unique([userId, notificationId])
 }
