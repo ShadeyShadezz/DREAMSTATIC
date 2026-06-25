@@ -10,7 +10,6 @@ async function getPrisma() {
   if (!connectionString) throw new Error('DATABASE_URL environment variable is required')
   const adapter = new PrismaNeon({ connectionString })
   prisma = new PrismaClient({ adapter })
-  await prisma.$connect()
   return prisma
 }
 
@@ -152,8 +151,13 @@ export async function updateRoom(id: string, patch: Partial<Room>): Promise<Room
 
 export async function deleteRoom(id: string): Promise<boolean> {
   const p = await getPrisma()
-  await p.room.delete({ where: { id } })
-  return true
+  try {
+    await p.room.delete({ where: { id } })
+    return true
+  } catch (error: any) {
+    if (error?.code === 'P2025') return false
+    throw error
+  }
 }
 
 export async function getUserById(id: string): Promise<User | null> {

@@ -39,7 +39,8 @@ const seedUsers = [
 ]
 
 async function main() {
-  const { PrismaClient } = await import('@prisma/client')
+  const prismaModule = await import('@prisma/client')
+  const { PrismaClient } = prismaModule.default
   const { PrismaNeon } = await import('@prisma/adapter-neon')
   const connectionString = process.env.DATABASE_URL
   if (!connectionString) {

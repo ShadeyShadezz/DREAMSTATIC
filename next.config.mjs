@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  // Vercel uses its own output system; standalone is for Docker self-hosting
   experimental: {
     webpackBuildWorker: true,
   },
