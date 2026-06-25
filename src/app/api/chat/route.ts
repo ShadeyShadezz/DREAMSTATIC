@@ -1,9 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import OpenAI from 'openai'
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
 
 const SYSTEM_PROMPT = `You are DreamAI, a creative assistant for the Dreamstatic404 app. You help users with:
 - Room name suggestions
@@ -19,6 +14,17 @@ CRITICAL RULES:
 - If asked about personal data, politely decline and redirect to design help
 - Be enthusiastic and match the Y2K/brutalist aesthetic vibe`
 
+let openai: any = null
+
+async function getOpenAI() {
+  if (openai) return openai
+  const { default: OpenAI } = await import('openai')
+  openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY || '',
+  })
+  return openai
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { message } = await request.json()
@@ -27,10 +33,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Message is required' }, { status: 400 })
     }
 
-    // Truncate to prevent abuse
     const sanitizedMessage = message.trim().slice(0, 1000)
+    const client = await getOpenAI()
 
-    const completion = await openai.chat.completions.create({
+    const completion = await client.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
