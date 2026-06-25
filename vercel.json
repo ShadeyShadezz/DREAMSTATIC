@@ -3,12 +3,6 @@
   "outputDirectory": ".next",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "functions": {
-    "api/**/*.ts": {
-      "maxDuration": 30,
-      "memory": 512
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",
